@@ -27,6 +27,26 @@
     <title>React App</title>
   </head>
   <body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyBepGMXG2QS5B_JnWTZN1FpCR8MI32ySa0",
+        authDomain: "mor-model-comparison.firebaseapp.com",
+        databaseURL: "https://mor-model-comparison.firebaseio.com",
+        projectId: "mor-model-comparison",
+        storageBucket: "mor-model-comparison.appspot.com",
+        messagingSenderId: "740943593150",
+        appId: "1:740943593150:web:181a8a01c08a2d8bf328ef"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--

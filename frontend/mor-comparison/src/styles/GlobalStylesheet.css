@@ -1,0 +1,11 @@
+.Button {
+    background-color: aqua;
+    border: 3 red;
+}
+
+.Card {
+    flex-direction: column;
+    width: auto;
+    height: 20;
+    border-radius: 2%;
+}
