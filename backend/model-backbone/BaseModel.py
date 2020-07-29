@@ -1,8 +1,20 @@
 from abc import ABC, abstractmethod
 import pickle
 from datetime import datetime
+import sys, os
+
+from pdf2image import convert_from_path, convert_from_bytes
+from pdf2image.exceptions import (
+    PDFInfoNotInstalledError,
+    PDFPageCountError,
+    PDFSyntaxError
+)
+
+from urllib.request import urlopen
 
 class BaseModel(ABC):
+
+    png_files = []
 
     def __init__(self):
         self.current_dateTime = datetime.now().strftime("%Y-%b-%d T %H-%M-%S.%f")
@@ -40,6 +52,7 @@ class BaseModel(ABC):
 
     def get_image(self):
         # Need to impliment :/
+        print("not implimented")
         pass
 
     def generate_pickle(self, save_path=None):
@@ -47,3 +60,42 @@ class BaseModel(ABC):
         # pickle.dump(self, open('model_pkls/'+filename, 'wb'))
         pass
 
+    def convert_pdf(self, url:str):
+        self.png_files = Utils.PdfToPng(url)
+        print("created " + str(self.png_files))
+        pass
+
+    def cleanup(self):
+        # clear the png files
+        for file in self.png_files:
+            os.remove(file)
+
+
+
+
+# ================================================================================================================
+
+class Utils():
+    
+    @staticmethod
+    def PdfToPng(url:str):
+        # Download temporarily
+        orig_path = "temp/downloaded.pdf"
+        pdf_file =  urlopen(url)
+        with open(orig_path,'wb') as output:
+            output.write(pdf_file.read())
+
+
+        files = []
+
+        images = convert_from_path("temp/downloaded.pdf")
+        index = 0
+        for image in images:
+            name = "temp/transcript-{0}.png".format(index)
+            files.append(name)
+            image.save(name)
+            index += 1
+        
+        os.remove(orig_path)
+
+        return files
