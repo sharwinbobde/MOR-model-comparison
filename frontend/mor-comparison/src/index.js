@@ -6,11 +6,27 @@ import * as serviceWorker from './serviceWorker';
 
 import Firebase, { FirebaseContext } from './components/Firebase';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure()
+
 ReactDOM.render(
   <React.StrictMode>
-    <FirebaseContext.Provider value={new Firebase()}>
-      <App />
-    </FirebaseContext.Provider>
+      <FirebaseContext.Provider value={new Firebase()}>
+        <App />
+      </FirebaseContext.Provider>
+
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        pauseOnHover
+      />
   </React.StrictMode>,
   document.getElementById('root')
 );

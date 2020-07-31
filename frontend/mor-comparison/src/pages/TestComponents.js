@@ -1,12 +1,24 @@
 import React from 'react';
 import '../styles/GlobalStylesheet.css'
 
-import '../styles/Dashboard.css'
+import '../styles/TestComponents.css'
 import { Button, IconButton, TextField, Card } from '@material-ui/core';
 import {FirebaseContext} from '../components/Firebase';
 import PdfViewer from '../components/PdfViewer'
+import JsonViewer from '../components/JsonViewer';
+import SegmentationViewer from '../components/SegmentationViewer';
+import CardComponent from '../components/CardComponent';
+import InformationCard from '../components/InformationCard';
+import ModelOverview from '../components/Dashboard/ModelOverview';
 
-class Dashboard extends React.Component {
+
+
+
+const sample_img_1 = 'https://images.typeform.com/images/uQHgGu5ZDSVJ/image/default'
+const sample_img_2 = 'https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg'
+
+
+class TestComponents extends React.Component {
 
     constructor(props) {
         super(props)
@@ -27,16 +39,12 @@ class Dashboard extends React.Component {
 
     }
 
-    handleWorkspaceChange(e) {
-        console.log(e)
-    }
-
     getAvailableSheetMusic(){
 
     }
 
     getAvailableModels(){
-        
+
     }
 
     render() {
@@ -103,52 +111,59 @@ class Dashboard extends React.Component {
                 
                                 <IconButton color="primary">Add a method</IconButton>
                 
-                                <Card>
-                                    this might go bad
-                                </Card>
+
+                                <InformationCard 
+                                title="This is a title"
+                                desc={"Oh this is so long..............".repeat(10)}
+                                />
+
                                 <h1>{this.state.text}</h1>
+
+                                <JsonViewer 
+                                title="This is a sample json"
+                                json={{hmm: {this:"seems ok"}}}/>
+
+                                <ModelOverview
+                                modelName="Model 1"
+                                modelDescription={"This is to describe the model. ".repeat(3)}
+                                imageUrl={sample_img_2}
+                                authorNotes={"Authors have written this. ".repeat(10)}
+                                userNotes={"You wrote this, don't you remember !!! ".repeat(10)}
+                                hyperparameters={{
+                                    "glossary": {
+                                        "title": "example glossary",
+                                        "GlossDiv": {
+                                            "title": "S",
+                                            "GlossList": {
+                                                "GlossEntry": {
+                                                    "ID": "SGML",
+                                                    "SortAs": "SGML",
+                                                    "GlossTerm": "Standard Generalized Markup Language",
+                                                    "Acronym": "SGML",
+                                                    "Abbrev": "ISO 8879:1986",
+                                                    "GlossDef": {
+                                                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
+                                                        "GlossSeeAlso": ["GML", "XML"]
+                                                    },
+                                                    "GlossSee": "markup"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }}
+                                />
+
+                                <SegmentationViewer
+                                imageUrl={sample_img_1}/>
+                                
                                 <PdfViewer pdf={this.state.sheetMusic}/>
                             </div>
                     )
                 }}
             </FirebaseContext.Consumer>
         );
-        // return (
-        //     <div className='Main'>
-        //         <Button
-        //         className="Button"
-        //         variant="contained"
-        //         component="label"
-        //         >
-        //         Select Workspace
-        //         <input
-        //             type="openDirectory"
-        //             style={{ display: "none" }}
-        //         />
-        //         </Button> <br/>
-
-        //         <Button
-        //         className="Button"
-        //         variant="contained"
-        //         component="label"
-        //         >
-        //         Select Sheet music
-        //         <input
-        //             type="file"
-        //             style={{ display: "none" }}
-        //         />
-        //         </Button> <br/>
-                
-
-        //         <IconButton color="primary">Add a method</IconButton>
-
-        //         <Card>
-        //             this might go bad
-        //         </Card>
-        //     </div>
-        // );
     }
 
 }
 
-export default Dashboard
+export default TestComponents

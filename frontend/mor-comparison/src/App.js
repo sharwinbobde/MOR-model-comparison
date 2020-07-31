@@ -1,33 +1,19 @@
 import React from 'react';
 import './styles/App.css';
-import Dashboard from './pages/Dashboard';
 import { FirebaseContext } from './components/Firebase';
+import TestComponents from './pages/TestComponents';
+import Landing from './pages/Landing';
+import HomeContainer from './pages/HomeContainer';
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
+
 
 function App() {
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
 
   return(
-    <div>
-
-      <Dashboard/>
-    </div>
+    <ThemeProvider theme={theme}>
+      <HomeContainer/>
+    </ThemeProvider>
   );
 }
 

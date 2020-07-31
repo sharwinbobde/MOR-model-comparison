@@ -2,6 +2,9 @@ import app from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/auth';
 
+
+import { toast } from 'react-toastify';
+
 const firebaseConfig = {
     apiKey: "AIzaSyBepGMXG2QS5B_JnWTZN1FpCR8MI32ySa0",
     authDomain: "mor-model-comparison.firebaseapp.com",
@@ -19,6 +22,30 @@ class Firebase {
         this.auth = app.auth()
         this.db = app.firestore()
     }
+
+    // Auth
+
+    doCreateUserWithEmailAndPassword = (email, password) => {
+        this.auth.createUserWithEmailAndPassword(email, password);
+    }
+
+    doSignInWithEmailAndPassword = (email, password) => {
+        this.auth.signInWithEmailAndPassword(email, password)
+        .then(authUser =>{
+            toast.success("Logged In")
+        })
+        .catch(error => toast.error(error.message))
+    }
+
+    doSignOut = () => {
+        this.auth.signOut();
+    }  
+    
+    doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+ 
+    doPasswordUpdate = password =>
+      this.auth.currentUser.updatePassword(password);
+    
 }
 
 export default Firebase
