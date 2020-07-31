@@ -17,10 +17,23 @@ const firebaseConfig = {
   };
 
 class Firebase {
+
+    static isSignedIn = false
+
     constructor(){
         app.initializeApp(firebaseConfig)
         this.auth = app.auth()
         this.db = app.firestore()
+
+        this.isSignedIn = false
+
+        this.auth.onAuthStateChanged( user =>{
+            if(user){
+                Firebase.isSignedIn = true
+            } else {
+                Firebase.isSignedIn = false
+            }
+        })
     }
 
     // Auth
