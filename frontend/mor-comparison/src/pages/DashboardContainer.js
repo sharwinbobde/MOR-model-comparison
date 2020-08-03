@@ -48,6 +48,8 @@ class DashboardContainer extends React.Component{
       <FirebaseContext>
         {context=>{
           return(
+            <div className="DashboardContainer">
+
             <Router>
 
               {/* Basic UI Setup */}
@@ -104,6 +106,8 @@ class DashboardContainer extends React.Component{
               </Route>
             </Switch>
             </Router>
+
+            </div>
           )
         }}
       </FirebaseContext>

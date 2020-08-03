@@ -3,6 +3,11 @@
     border: 3px red;
 }
 
+html, body, #app, #app>div {
+    height: 100%
+  }
+
+
 .CardComponent {
     text-align: left;
     flex-direction: column;
@@ -16,4 +21,30 @@
     border-radius: 0.5%;
     background-color: #f5f1e4;
     box-shadow: 4px 8px 10px 0 rgba(0,0,0,0.2);
+}
+
+.ModelComparasonContainer {
+    margin: 20px;
+    padding: 10px;
+    /* background-color: aqua; */
+    text-align: center;
+    height: 100%;
+}
+.Landing {
+    background-color: black;
+}
+
+.DashboardContainer {
+    height: 100%;
+    width: 100%;
+    /* background-color: blueviolet; */
+}
+
+.horizontalComparison{
+    display: flex;
+    flex-direction: row;
+}
+
+.ModelOverview{
+    flex: 1;
 }
