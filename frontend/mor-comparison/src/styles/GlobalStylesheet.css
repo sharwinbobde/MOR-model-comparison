@@ -46,5 +46,10 @@ html, body, #app, #app>div {
 }
 
 .ModelOverview{
+    display: flex;
     flex: 1;
+}
+.SegmentationViewer{
+    display: flex;
+    margin: 2%;
 }

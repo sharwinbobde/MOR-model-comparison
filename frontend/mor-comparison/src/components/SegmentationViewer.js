@@ -18,7 +18,7 @@ class SegmentationViewer extends React.Component {
         } = this.props;
 
         return (
-            <div style={{ maxWidth: 400, margin: 10 }}>
+            <div className="SegmentationViewer">
                 <SideBySideMagnifier
                     imageSrc={this.props.imageUrl}
                     imageAlt="Example"
