@@ -5,7 +5,7 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import {AppBar, Toolbar, IconButton, Button, ThemeProvider, Typography, Drawer, Divider} from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, Button, ThemeProvider, Typography, Drawer, Divider } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { FirebaseContext } from "../components/Firebase";
 import { toast } from 'react-toastify';
@@ -19,9 +19,9 @@ import Guide from "./DashboardPages/Guide";
 
 
 
-class DashboardContainer extends React.Component{
+class DashboardContainer extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.doSignOut = this.doSignOut.bind(this)
     this.toggleDrawer = this.toggleDrawer.bind(this)
@@ -31,81 +31,91 @@ class DashboardContainer extends React.Component{
     }
   }
 
-  doSignOut(context){
+  doSignOut(context) {
     context.doSignOut()
     toast.info("Logged Out")
   }
-  
-  toggleDrawer(){
-    if(this.state.drawerOpen)
-      this.setState({drawerOpen: false})
+
+  toggleDrawer() {
+    if (this.state.drawerOpen)
+      this.setState({ drawerOpen: false })
     else
-      this.setState({drawerOpen: true})
+      this.setState({ drawerOpen: true })
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <FirebaseContext>
-        {context=>{
-          return(
+        {context => {
+          return (
             <div className="DashboardContainer">
 
-            <Router>
+              <Router>
 
-              {/* Basic UI Setup */}
-            <AppBar position="static" color="primary" style={{flexGrow:1}}>
-              <Toolbar>
-                <IconButton>
-                    <MenuIcon onClick={this.toggleDrawer}/>
-                </IconButton>
-                <Link to="/">
-                  <Button>Dashboard</Button>
-                </Link>
-                <Link to="/guide">
-                  <Button>Guide</Button>
-                </Link>
-                <Button color="inherit" 
-                onClick={()=>this.doSignOut(context)}>SignOut</Button>
-              </Toolbar>
-            </AppBar>
+                {/* Basic UI Setup */}
+                <AppBar position="static" color="primary" style={{ flexGrow: 1 }}>
+                  <Toolbar>
+                    <IconButton>
+                      <MenuIcon onClick={this.toggleDrawer} />
+                    </IconButton>
+                    <Link to="/">
+                      <Button>Dashboard</Button>
+                    </Link>
+                    <Link to="/guide">
+                      <Button>Guide</Button>
+                    </Link>
+                    <Button color="inherit"
+                      onClick={() => this.doSignOut(context)}>SignOut</Button>
+                  </Toolbar>
+                </AppBar>
 
-            <Drawer
-            className="Drawer"
-            variant="persistent"
-            anchor="left"
-            open={this.state.drawerOpen}
-            style={{padding: "20px"}}>
-              <IconButton 
-              style={{justifyContent: 'right'}}
-              onClick={this.toggleDrawer}>
-                {<ChevronLeftIcon/>}
-              </IconButton>
-              
-              <Divider />
+                <Drawer
+                  className="Drawer"
+                  variant="persistent"
+                  anchor="left"
+                  open={this.state.drawerOpen}
+                  style={{ padding: "20px" }}>
+                  <IconButton
+                    style={{ justifyContent: 'right' }}
+                    onClick={this.toggleDrawer}>
+                    {<ChevronLeftIcon />}
+                  </IconButton>
 
-              <Link to="/">
-                <Button>Overview</Button>
-              </Link>
-              <Link to="/model-comparison">
-                <Button>Model Comparison</Button>
-              </Link>
-            </Drawer>
+                  <Divider />
+
+                  <Link to="/">
+                    <Button>Overview</Button>
+                  </Link>
+                  <Link to="/model-comparison">
+                    <Button>Model Comparison</Button>
+                  </Link>
+
+                  <Divider />
+
+                  <Link to="/">
+                    <Button>Your sheet music</Button>
+                  </Link>
+                  <Link to="/model-comparison">
+                    <Button>Your models</Button>
+                  </Link>
+
+                </Drawer>
 
 
-            {/* Components start here */}
-  
-            <Switch>
-              <Route exact path="/">
-                <Overview/>
-              </Route>
-              <Route exact path="/guide">
-                <Guide/>
-              </Route>
-              <Route path="/model-comparison">
-                <ModelComparason/>
-              </Route>
-            </Switch>
-            </Router>
+                {/* Components start here */}
+
+                <Switch>
+                  <Route exact path="/">
+                    <Overview />
+                  </Route>
+                  <Route exact path="/guide">
+                    <Guide />
+                  </Route>
+                  <Route path="/model-comparison">
+                    <ModelComparason />
+                  </Route>
+                </Switch>
+              </Router>
 
             </div>
           )
