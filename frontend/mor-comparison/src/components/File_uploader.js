@@ -1,6 +1,5 @@
 import React from 'react';
 import CardComponent from './CardComponent';
-import S3Uploader from 'react-aws-s3-uploader';
 
 import { FirebaseContext } from "./Firebase";
 import { Button } from '@material-ui/core';
