@@ -20,8 +20,11 @@ class SegmentationViewer extends React.Component {
         return (
             <div className="SegmentationViewer">
                 <SideBySideMagnifier
-                    imageSrc={this.props.imageUrl}
-                    imageAlt="Example"
+                    // imageSrc={this.props.imageUrl}
+                    imageSrc={"https://firebasestorage.googleapis.com/v0/b/mor-model-compar…est.png?alt=media&token=d43d24bf-9cf6-4617-8b9c-d51fd2b71223"}
+
+                    
+                    // imageAlt={this.props.imageUrl.String}
                     // largeImageSrc={this.props.imageUrl} // Optional
                     alwaysInPlace={true}
                 />

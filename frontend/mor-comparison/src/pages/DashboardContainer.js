@@ -16,6 +16,9 @@ import '../styles/GlobalStylesheet.css'
 import ModelComparason from "./DashboardPages/ModelComparison";
 import Overview from "./DashboardPages/Overview";
 import Guide from "./DashboardPages/Guide";
+import TestComponents from "./TestComponents";
+import YourModels from "./DashboardPages/YourModels";
+import YourSheetMusic from "./DashboardPages/YourSheetMusic";
 
 
 
@@ -26,11 +29,14 @@ class DashboardContainer extends React.Component {
     this.doSignOut = this.doSignOut.bind(this)
     this.toggleDrawer = this.toggleDrawer.bind(this)
 
-    this.state = {
-      drawerOpen: false,
-    }
   }
 
+  state = {
+    drawerOpen: false,
+
+    fetchedUser: false,
+    isUserDeveloper: false
+  }
   doSignOut(context) {
     context.doSignOut()
     toast.info("Logged Out")
@@ -47,6 +53,21 @@ class DashboardContainer extends React.Component {
     return (
       <FirebaseContext>
         {context => {
+
+          if (!this.state.fetchedUser) {
+            context.db.collection('users').where('uid', "==", context.auth.currentUser.uid).limit(1).get()
+              .then(snapshot => {
+                snapshot.forEach(doc => {
+                  console.log('here');
+                  if (doc.data().developer == true) {
+                    toast("Hello Developer ;)")
+                    this.setState({ isUserDeveloper: true })
+                  }
+                });
+              })
+            this.setState({ fetchedUser: true })
+          }
+
           return (
             <div className="DashboardContainer">
 
@@ -64,6 +85,14 @@ class DashboardContainer extends React.Component {
                     <Link to="/guide">
                       <Button>Guide</Button>
                     </Link>
+
+                    {(this.state.isUserDeveloper == true) ?
+                      <div style={{ borderBottom: "2px solid yellow" }}>
+                        <Link to="/test-components">
+                          <Button>Test Components</Button>
+                        </Link>
+                      </div> : <div />}
+
                     <Button color="inherit"
                       onClick={() => this.doSignOut(context)}>SignOut</Button>
                   </Toolbar>
@@ -92,10 +121,10 @@ class DashboardContainer extends React.Component {
 
                   <Divider />
 
-                  <Link to="/">
+                  <Link to="/your-sheet-music">
                     <Button>Your sheet music</Button>
                   </Link>
-                  <Link to="/model-comparison">
+                  <Link to="/your-models">
                     <Button>Your models</Button>
                   </Link>
 
@@ -114,6 +143,21 @@ class DashboardContainer extends React.Component {
                   <Route path="/model-comparison">
                     <ModelComparason />
                   </Route>
+                  <Route path="/your-sheet-music">
+                    <YourSheetMusic />
+                  </Route>
+                  <Route path="/your-models">
+                    <YourModels />
+                  </Route>
+
+
+                  {(this.state.isUserDeveloper == true) ?
+                    <div>
+                      <Route path="/test-components">
+                        <TestComponents />
+                      </Route>
+
+                    </div> : <div />}
                 </Switch>
               </Router>
 

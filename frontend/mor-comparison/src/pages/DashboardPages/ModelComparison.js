@@ -1,90 +1,165 @@
 import React from "react";
 import { FirebaseContext } from "../../components/Firebase";
-import { FormControl, Select, MenuList, InputLabel, MenuItem } from "@material-ui/core";
+import { FormControl, Select, MenuList, InputLabel, MenuItem, FormLabel, FormGroup, FormControlLabel, Checkbox } from "@material-ui/core";
 import '../../styles/GlobalStylesheet.css'
 import ModelOverview from "../../components/Dashboard/ModelOverview";
+import CardComponent from "../../components/CardComponent";
+import PdfViewer from "../../components/PdfViewer";
 
-const sample_img_1 = 'https://images.typeform.com/images/uQHgGu5ZDSVJ/image/default'
-const sample_img_2 = 'https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg'
+import { toast } from 'react-toastify';
 
+class ModelComparason extends React.Component {
 
-class ModelComparason extends React.Component{
-
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state = {
-            userName:"",
-            sheetMusic: [
-                {
-                    name: "Sample 1",
-                    url: "bullshit url 1"
-                },
-                {
-                    name: "Sample 2",
-                    url: "bullshit url 2"
-                }
-            ],
-            models: [{}, {}]
+    }
+
+    state = {
+        // userName: "",
+        selectedSheetMusicDoc: null,
+        sheetMusic: [],
+        models: [],
+        SheetMusicLink: '',
+
+        fetchedModels: false,
+        fetchedSheetMusic: false,
+    }
+
+    changeModelVisibility(doc) {
+        if (doc.visible) {
+            if (doc.visible == true) { // True
+                doc.visible = false
+            } else if (doc.visible == false) {
+                doc.visible = true
+            }
+        }
+        else {
+            doc.visible = true
+        }
+        console.log(doc)
+        this.setState({})
+    }
+
+    pickSheetMusic(event, context) {
+        var doc = event.target.value
+        if (doc) { // non-null
+            var sheet = doc.data()
+            this.setState({ selectedSheetMusicDoc: doc })
+
+            var storageRef = context.storage.ref().child("sheet-music/" + doc.id)
+            storageRef.getDownloadURL()
+                .then(url => {
+                    this.setState({ SheetMusicLink: url })
+                    console.log(url)
+                })
+                .catch(error => {
+                    toast.error("Couldnt fetch a file!!")
+                    this.setState({ SheetMusicLink: "" })
+                })
+        }
+        else {
+            this.setState({ selectedSheetMusicDoc: null })
         }
     }
 
-
-    render(){
-        return(
+    render() {
+        return (
             <FirebaseContext.Consumer>
-                {context=>{
-                    return(
+                {context => {
+
+                    // Fetch Your models
+                    if (!this.state.fetchedModels) {
+                        context.db.collection('models').where("owner", '==', context.auth.currentUser.uid).get()
+                            .then(snapshot => {
+                                console.log(snapshot)
+                                snapshot.forEach(doc => {
+                                    doc.visible = false// hidden at first until clicked the checkbox
+                                    this.setState({
+                                        models: this.state.models.concat(doc)
+                                    })
+                                });
+                            })
+                        this.setState({ fetchedModels: true })
+                    }
+
+                    if (!this.state.fetchedSheetMusic) {
+                        context.db.collection('sheet-music').where("users", 'array-contains', context.auth.currentUser.uid).get()
+                            .then(snapshot => {
+                                console.log(snapshot)
+                                snapshot.forEach(doc => {
+                                    this.setState({
+                                        sheetMusic: this.state.sheetMusic.concat(doc)
+                                    })
+                                });
+                            })
+
+                        this.setState({ fetchedSheetMusic: true })
+                    }
+
+                    return (
                         <div class="ModelComparasonContainer">
-                            <h2>Hello{this.state.userName}, happy comparing!</h2>
+                            <h1>Hello{this.state.userName}, happy comparing!</h1>
+
                             <FormControl
-                            variant="standard">
-                                <InputLabel>Select sheet music</InputLabel>
-                                <Select
-                                style={{width:"500px"}}>
-                                    {this.state.sheetMusic.map(doc => {
-                                        return(
-                                        <MenuItem style={{padding:"10px"}} value={doc.url}>{doc.name}</MenuItem>
+                                variant="standard">
+
+
+
+                                <h2>Step 1. Pick Models</h2>
+                                <FormGroup>
+                                    {this.state.models.map(doc => {
+                                        var model = doc.data()
+                                        return (
+                                            <FormControlLabel
+                                                label={model.modelName}
+                                                control={<Checkbox checked={model.visible} onChange={() => this.changeModelVisibility(doc)} name={"hmmmm"} />}
+                                            />
                                         )
-                                    })}
-                                </Select>
+                                    })
+                                    }
+                                </FormGroup>
+                            </FormControl><br />
+
+                            <h2>Step 2. Select Sheet Music</h2>
+                            <FormControl>
+                                <FormGroup>
+
+                                    <InputLabel>Select sheet music</InputLabel>
+                                    <Select
+                                        style={{ width: "500px" }}
+                                        value={this.state.selectedSheetMusicDoc}
+                                        onChange={event => this.pickSheetMusic(event, context)}>
+
+                                        <MenuItem style={{ padding: "10px" }} value={null}>--</MenuItem>
+
+                                        {this.state.sheetMusic.map(doc => {
+                                            var sheet = doc.data()
+                                            return (
+                                                <MenuItem style={{ padding: "10px" }} value={doc}>{sheet.name}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormGroup>
                             </FormControl>
+
+                            {(this.state.selectedSheetMusicDoc) ?
+                                <PdfViewer pdf={this.state.SheetMusicLink} />
+                                : <div />}
+
                             <div className="horizontalComparison">
 
-                            {this.state.models.map(model => {
-                                // send API call and let the server do the job
+                                {this.state.models.map(doc => {
+                                    var model = doc.data()
+                                    if (doc.visible)
+                                        return (
+                                            <ModelOverview
+                                                id={doc.id}
+                                                model={model}
+                                                sheetMusicDoc={this.state.selectedSheetMusicDoc}
+                                            />);
+                                })}
 
-                                return(<ModelOverview
-                                    modelName="Model 1"
-                                    modelDescription={"This is to describe the model. ".repeat(3)}
-                                    imageUrl={sample_img_2}
-                                    authorNotes={"Authors have written this. ".repeat(10)}
-                                    userNotes={"You wrote this, don't you remember !!! ".repeat(10)}
-                                    hyperparameters={{
-                                        "glossary": {
-                                            "title": "example glossary",
-                                            "GlossDiv": {
-                                                "title": "S",
-                                                "GlossList": {
-                                                    "GlossEntry": {
-                                                        "ID": "SGML",
-                                                        "SortAs": "SGML",
-                                                        "GlossTerm": "Standard Generalized Markup Language",
-                                                        "Acronym": "SGML",
-                                                        "Abbrev": "ISO 8879:1986",
-                                                        "GlossDef": {
-                                                            "para": "A meta-markup language, used to create markup languages such as DocBook.",
-                                                            "GlossSeeAlso": ["GML", "XML"]
-                                                        },
-                                                        "GlossSee": "markup"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }}
-                                />)
-                            })}
-
-                        </div>
+                            </div>
                         </div>
                     )
                 }}

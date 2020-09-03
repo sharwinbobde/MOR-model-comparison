@@ -1,6 +1,7 @@
 import app from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage'
 
 
 import { toast } from 'react-toastify';
@@ -24,6 +25,7 @@ class Firebase {
         app.initializeApp(firebaseConfig)
         this.auth = app.auth()
         this.db = app.firestore()
+        this.storage = app.storage()
 
         this.isSignedIn = false
 

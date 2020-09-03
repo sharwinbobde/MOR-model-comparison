@@ -9,6 +9,8 @@
 !.vscode/extensions.json
 *.code-workspace
 
+./testbench/apacha_MeasureDetector/*
+
 # Local History for Visual Studio Code
 .history/
 

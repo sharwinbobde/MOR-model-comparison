@@ -1,7 +1,6 @@
 import React from 'react';
 import '../styles/GlobalStylesheet.css'
 
-import '../styles/TestComponents.css'
 import { Button, IconButton, TextField, Card } from '@material-ui/core';
 import {FirebaseContext} from '../components/Firebase';
 import PdfViewer from '../components/PdfViewer'
@@ -10,6 +9,7 @@ import SegmentationViewer from '../components/SegmentationViewer';
 import CardComponent from '../components/CardComponent';
 import InformationCard from '../components/InformationCard';
 import ModelOverview from '../components/Dashboard/ModelOverview';
+import File_uploader from '../components/File_uploader';
 
 
 
@@ -83,7 +83,11 @@ class TestComponents extends React.Component {
                     })
 
                     return(
-                            <div className='Main'>
+                            <div className='GenericContainer'>
+
+                                <File_uploader
+                                storageTarget='test/images/test.png'
+                                accept='.png'/>
                                 <Button
                                 className="Button"
                                 variant="contained"
@@ -124,9 +128,11 @@ class TestComponents extends React.Component {
                                 json={{hmm: {this:"seems ok"}}}/>
 
                                 <ModelOverview
+                                model={{}}
                                 modelName="Model 1"
                                 modelDescription={"This is to describe the model. ".repeat(3)}
                                 imageUrl={sample_img_2}
+                                imageStorageLocation='test/images/test.png'
                                 authorNotes={"Authors have written this. ".repeat(10)}
                                 userNotes={"You wrote this, don't you remember !!! ".repeat(10)}
                                 hyperparameters={{

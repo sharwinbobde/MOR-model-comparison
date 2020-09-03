@@ -8,18 +8,24 @@ class JsonViewer extends React.Component {
 
     constructor(props){ 
         super(props)
-        // this.state = {
-        //     pdf: this.props.pdf
-        // }
-        // console.log(props)
+    }
+
+    state = {
+
     }
 
     render(){
+
+        try {
+            var json = JSON.parse(this.props.jsonString)
+        } catch (error) {
+            var json = {Error: "Invalid JSON string provided"}
+        }
         return(
             <CardComponent>
                 <h3>{this.props.title}</h3>
 
-                <ReactJson src={this.props.json} />
+                <ReactJson src={json} />
             </CardComponent>
         )
     }

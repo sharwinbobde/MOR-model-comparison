@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
-import PDFViewer from 'pdf-viewer-reactjs'
 
 
 
 
 class PdfViewer extends React.Component {
 
-    constructor(props){ 
+    constructor(props) {
         super(props)
-        // this.state = {
-        //     pdf: this.props.pdf
-        // }
-        // console.log(props)
     }
 
-    render(){
-        return(
-            <div>
-                <embed src={this.props.pdf} width="800px" height="900px" />
+    render() {
+        return (
+            <div style={{
+                width: "100%",
+                // maxHeight: "500px",
+                // paddingTop: "75%",
+                // border: "5px solid red"
+            }}>
+                <embed src={this.props.pdf}
+                
+                    style={{
+                        position:"flex",
+                        width: "400px",
+                        // paddingTop: "75%",
+                        height: "500px"
+                    }} />
             </div>
         )
     }

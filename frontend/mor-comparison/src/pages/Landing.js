@@ -1,11 +1,11 @@
 import React from "react";
-import {FirebaseContext} from '../components/Firebase';
+import { FirebaseContext } from '../components/Firebase';
 import HomeContainer from "./HomeContainer";
 import DashboardContainer from "./DashboardContainer";
 
-class Landing extends React.Component{
+class Landing extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       isSignedIn: false
@@ -14,32 +14,32 @@ class Landing extends React.Component{
   }
 
 
-  signinListener = (user)=>{
-    if(user){
-      if(!this.state.isSignedIn)
-        this.setState({isSignedIn: true})
-    }else{
-      if(this.state.isSignedIn)
-        this.setState({isSignedIn: false})
+  signinListener = (user) => {
+    if (user) {
+      if (!this.state.isSignedIn)
+        this.setState({ isSignedIn: true })
+    } else {
+      if (this.state.isSignedIn)
+        this.setState({ isSignedIn: false })
     }
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <FirebaseContext.Consumer>
-        {(context)=>{
-          context.auth.onAuthStateChanged( user => this.signinListener(user))
+        {(context) => {
+          context.auth.onAuthStateChanged(user => this.signinListener(user))
 
-          if(this.state.isSignedIn){
-            return(
-              <DashboardContainer/>
+          if (this.state.isSignedIn) {
+            return (
+              <DashboardContainer />
             )
           } else {
-            return(
-              <HomeContainer/>
+            return (
+              <HomeContainer />
             )
           }
-          }}
+        }}
       </FirebaseContext.Consumer>
     )
   }

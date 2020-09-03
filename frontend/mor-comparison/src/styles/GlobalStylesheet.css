@@ -12,9 +12,9 @@ html, body, #app, #app>div {
     text-align: left;
     flex-direction: column;
     justify-content: center;
-    width: 90%;
-    min-width: 300px;
-    padding: 10px;
+    width: min-content;
+    min-width: 400px;
+    padding: 2%;
     margin: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -24,7 +24,7 @@ html, body, #app, #app>div {
 }
 
 .ModelComparasonContainer {
-    margin: 20px;
+    margin: 10px;
     padding: 10px;
     /* background-color: aqua; */
     text-align: center;
@@ -48,8 +48,15 @@ html, body, #app, #app>div {
 .ModelOverview{
     display: flex;
     flex: 1;
+    margin: 10px;
 }
 .SegmentationViewer{
     display: flex;
     margin: 2%;
+}
+
+.GenericContainer {
+    text-align: center;
+    flex-direction: row;
+    margin: 10px;
 }
