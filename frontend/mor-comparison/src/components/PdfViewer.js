@@ -13,14 +13,18 @@ class PdfViewer extends React.Component {
         return (
             <div style={{
                 width: "100%",
+                display: 'flex',
+                justifyContent: 'center',
+                textAlign: 'center'
                 // maxHeight: "500px",
                 // paddingTop: "75%",
                 // border: "5px solid red"
             }}>
-                <embed src={this.props.pdf}
-                
+                <embed
+                    src={this.props.pdf}
+                    allowfullscrean
                     style={{
-                        position:"flex",
+                        position: "flex",
                         width: "400px",
                         // paddingTop: "75%",
                         height: "500px"

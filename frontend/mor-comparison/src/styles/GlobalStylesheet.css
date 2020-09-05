@@ -14,13 +14,13 @@ html, body, #app, #app>div {
     justify-content: center;
     width: min-content;
     min-width: 400px;
-    padding: 2%;
+    padding: 10px;
     margin: 10px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 0.5%;
     background-color: #f5f1e4;
-    box-shadow: 4px 8px 10px 0 rgba(0,0,0,0.2);
+    box-shadow: 4px 5px 17px rgba(0,0,0,0.2);
 }
 
 .ModelComparasonContainer {

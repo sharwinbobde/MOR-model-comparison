@@ -27,6 +27,11 @@ class ModelOverview extends React.Component {
 
         fetchedModelOutputPDF: false,
         modelOutputPDF: '',
+
+
+        fetchedMetricsJSON: false,
+        metricsJSONDoc: null,
+        metricsJSON: ''
     }
 
     deleteModel(context, id) {
@@ -57,6 +62,44 @@ class ModelOverview extends React.Component {
             })
     }
 
+    fetchMetricsJSON(context) {
+        if (this.props.sheetMusicDoc) {
+            var docid = "model-" + this.props.id + "-sheet-" + this.props.sheetMusicDoc.id
+            console.log(docid);
+            context.db.collection('model-metrics')
+                .doc(docid)
+                .get()
+                .then(doc => {
+                    // toast.success("fetched metrics")
+                    this.setState({
+                        metricsJSONDoc: doc,
+                        metricsJSON: doc.data().metricsJSON
+                    })
+                })
+                .catch(error => {
+                    // console.log(error);
+                    // toast.error("Couldnt fetch metrics")
+                    this.setState({ metricsJSONDoc: null, metricsJSON: "" })
+                })
+
+            this.setState({ fetchedMetricsJSON: true })
+        }
+    }
+
+    saveMetrics(context) {
+        if (this.props.sheetMusicDoc) {
+            context.db.collection('model-metrics').doc("model-" + this.props.id + "-sheet-" + this.props.sheetMusicDoc.id)
+                .set({ metricsJSON: this.state.metricsJSON })
+                .then(res => {
+                    toast.success("Saved Metrics")
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error("Something went wrong")
+                })
+        }
+    }
+
     fetchOutputPdfURL(context) {
         if (this.props.sheetMusicDoc) {
             var storageRef = context.storage.ref().child("model-sheet-outputs/" + "model-" + this.props.id + "-sheet-" + this.props.sheetMusicDoc.id + ".pdf")
@@ -71,6 +114,7 @@ class ModelOverview extends React.Component {
                     // toast.error("Couldnt fetch a file!!")
                     this.setState({ modelOutputPDF: "" })
                 })
+
             this.setState({ fetchedModelOutputPDF: true })
         }
     }
@@ -135,6 +179,10 @@ class ModelOverview extends React.Component {
                         this.fetchOutputPdfURL(context)
                     }
 
+                    if (!this.state.fetchedMetricsJSON) {
+                        this.fetchMetricsJSON(context)
+                    }
+
                     return (
                         <div className="ModelOverview">
 
@@ -152,16 +200,6 @@ class ModelOverview extends React.Component {
                                                 onChange={event => this.editField(context, "modelName", event.target.value)}
                                             />
 
-                                            {(this.props.sheetMusicDoc) ?
-                                                <div>
-                                                    <File_uploader
-                                                        accept=".pdf"
-                                                        storageTarget={"model-sheet-outputs/" + "model-" + this.props.id + "-sheet-" + this.props.sheetMusicDoc.id + ".pdf"}
-                                                    />
-                                                    <PdfViewer pdf={this.state.modelOutputPDF} />
-                                                </div> : <div />
-                                            }
-
                                             <TextField
                                                 label="Description"
                                                 multiline
@@ -169,6 +207,32 @@ class ModelOverview extends React.Component {
                                                 value={this.props.model.modelDescription}
                                                 onChange={event => this.editField(context, "modelDescription", event.target.value)}
                                             />
+
+                                            {(this.props.sheetMusicDoc) ?
+                                                <div>
+                                                    <File_uploader
+                                                        accept=".pdf"
+                                                        storageTarget={"model-sheet-outputs/" + "model-" + this.props.id + "-sheet-" + this.props.sheetMusicDoc.id + ".pdf"}
+                                                    />
+                                                    <PdfViewer pdf={this.state.modelOutputPDF} /> <br />
+
+
+                                                    <JsonViewer
+                                                        title="Metrics"
+                                                        jsonString={this.state.metricsJSON}
+                                                    /><br />
+                                                    <TextField
+                                                        label="Metrics"
+                                                        multiline
+                                                        rowsMax={12}
+                                                        value={this.state.metricsJSON}
+                                                        onChange={event => { this.setState({ metricsJSON: event.target.value }) }}
+                                                    />
+                                                    <br />
+
+                                                    <Button color="primary" onClick={() => this.saveMetrics(context)}>Save Metrics</Button>
+                                                </div> : <div />
+                                            }
 
 
                                             <JsonViewer
@@ -196,7 +260,7 @@ class ModelOverview extends React.Component {
                                             />
                                         </FormControl><br />
 
-                                        {(this.props.deletable) ? <Button onClick={() => this.saveChanges(context)}>Save CHanges</Button> : <div />}<br /><br />
+                                        {(this.props.deletable) ? <Button color="primary" onClick={() => this.saveChanges(context)}>Save Changes</Button> : <div />}<br /><br />
                                         {(this.props.deletable) ? <Button onClick={() => this.deleteModel(context, this.props.id)}>Delete</Button> : <div />}
 
                                     </div> :
@@ -208,19 +272,25 @@ class ModelOverview extends React.Component {
                                         <h2>{this.props.model.modelName}</h2><br />
 
 
+                                        {this.props.model.modelDescription}<br />
+
 
                                         {(this.props.sheetMusicDoc) ?
                                             <div>
-                                                <PdfViewer pdf={this.state.modelOutputPDF} />
+                                                <PdfViewer pdf={this.state.modelOutputPDF} /><br />
+
+
+                                                <JsonViewer
+                                                    title="Metrics"
+                                                    jsonString={this.state.metricsJSON}
+                                                />
                                             </div> : <div />
                                         }
-
-                                        {this.props.model.modelDescription}<br />
                                         <JsonViewer
                                             title="Hyperparameters"
                                             jsonString={this.props.model.hyperparameters} />
-                                )
-                                <InformationCard
+
+                                        <InformationCard
                                             title="Author's Notes"
                                             desc={this.props.model.authorNotes}
                                         />
