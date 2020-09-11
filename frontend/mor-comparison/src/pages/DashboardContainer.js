@@ -19,6 +19,7 @@ import Guide from "./DashboardPages/Guide";
 import TestComponents from "./TestComponents";
 import YourModels from "./DashboardPages/YourModels";
 import YourSheetMusic from "./DashboardPages/YourSheetMusic";
+import Explore from "./DashboardPages/Explore";
 
 
 
@@ -88,6 +89,10 @@ class DashboardContainer extends React.Component {
 
                     {(this.state.isUserDeveloper == true) ?
                       <div style={{ borderBottom: "2px solid yellow" }}>
+
+                        <Link to="/explore">
+                          <Button>Explore</Button>
+                        </Link>
                         <Link to="/test-components">
                           <Button>Test Components</Button>
                         </Link>
@@ -140,6 +145,7 @@ class DashboardContainer extends React.Component {
                   <Route exact path="/guide">
                     <Guide />
                   </Route>
+                  
                   <Route path="/model-comparison">
                     <ModelComparason />
                   </Route>
@@ -153,6 +159,9 @@ class DashboardContainer extends React.Component {
 
                   {(this.state.isUserDeveloper == true) ?
                     <div>
+                      <Route exact path="/explore">
+                        <Explore/>
+                      </Route>
                       <Route path="/test-components">
                         <TestComponents />
                       </Route>
