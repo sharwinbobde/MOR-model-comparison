@@ -21,5 +21,15 @@ exports.addUserToFirestore = functions.auth.user().onCreate(user=>{
     }
 
     admin.firestore().collection('users').add(doc)
+
+    admin.firestore().collection('cross-user-model-links').add({
+      uid: user.uid,
+      models:[]
+    })
+
+    admin.firestore().collection('cross-user-sheetMusic-links').add({
+      uid: user.uid,
+      sheets:[]
+    })
     
 })

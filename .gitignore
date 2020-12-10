@@ -4,6 +4,11 @@
 *package-lock.json
 node_modules
 
+# secret
+tools/mor-model-comparison-firebase-adminsdk-j0aei-0f92efc514.json
+
+# test
+tools/upload_bundle/*
 
 .*.vscode/*
 !.vscode/settings.json

@@ -18,7 +18,10 @@ class ModelComparason extends React.Component {
         // userName: "",
         selectedSheetMusicDoc: null,
         sheetMusic: [],
+        linked_sheetMusic:[],
         models: [],
+        linked_models:[],
+
         SheetMusicLink: '',
 
         fetchedModels: false,

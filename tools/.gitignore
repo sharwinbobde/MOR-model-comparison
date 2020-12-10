@@ -1,0 +1,5 @@
+upload_bundle/*
+.idea/*
+
+#secret
+config.json
